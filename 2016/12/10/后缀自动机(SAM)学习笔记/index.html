@@ -1,0 +1,758 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法,SAM," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Introduction在下学习主要是通过第一篇Tutorial,有兴趣的朋友可以参考其他几篇.
+
+Hunt Zhan的《Suffix Automaton Tutorial》
+2012年noi冬令营陈立杰讲稿
+A short guide to suffix automata - Codeforces
+MAXimal :: algo :: Суффиксный автомат. Построение">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后缀自动机SAM学习笔记">
+<meta property="og:url" content="http://qutan.github.io/2016/12/10/后缀自动机(SAM)学习笔记/index.html">
+<meta property="og:site_name" content="Qutan'Blog">
+<meta property="og:description" content="Introduction在下学习主要是通过第一篇Tutorial,有兴趣的朋友可以参考其他几篇.
+
+Hunt Zhan的《Suffix Automaton Tutorial》
+2012年noi冬令营陈立杰讲稿
+A short guide to suffix automata - Codeforces
+MAXimal :: algo :: Суффиксный автомат. Построение">
+<meta property="og:updated_time" content="2016-12-10T13:25:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="后缀自动机SAM学习笔记">
+<meta name="twitter:description" content="Introduction在下学习主要是通过第一篇Tutorial,有兴趣的朋友可以参考其他几篇.
+
+Hunt Zhan的《Suffix Automaton Tutorial》
+2012年noi冬令营陈立杰讲稿
+A short guide to suffix automata - Codeforces
+MAXimal :: algo :: Суффиксный автомат. Построение">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://qutan.github.io/2016/12/10/后缀自动机(SAM)学习笔记/"/>
+
+
+  <title> 后缀自动机SAM学习笔记 | Qutan'Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Qutan'Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                后缀自动机SAM学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-10T21:12:36+08:00" content="2016-12-10">
+              2016-12-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/10/后缀自动机(SAM)学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/后缀自动机(SAM)学习笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>在下学习主要是通过第一篇Tutorial,有兴趣的朋友可以参考其他几篇.</p>
+<ul>
+<li><a href="https://huntzhan.org/suffix-automaton-tutorial/" target="_blank" rel="external">Hunt Zhan的《Suffix Automaton Tutorial》</a></li>
+<li><a href="http://wenku.baidu.com/link?url=3Z4gFoTT8TefUQ8b8MUT50MBNR43ehVUAX4GhrT8h_-ZY9ro1kn5nGoi8JYF3gffl7DzAiqX1ji502Pr0gfQm2TbeQuQh2wcy8xsehkjx3K" target="_blank" rel="external">2012年noi冬令营陈立杰讲稿</a></li>
+<li><a href="http://codeforces.com/blog/entry/20861" target="_blank" rel="external">A short guide to suffix automata - Codeforces</a></li>
+<li><a href="http://e-maxx.ru/algo/suffix_automata" target="_blank" rel="external">MAXimal :: algo :: Суффиксный автомат. Построение и применения</a></li>
+<li><a href="http://blog.csdn.net/wmdcstdio/article/details/44780707" target="_blank" rel="external">后缀自动机：O(N)的构建及应用 - wmdcstdio的专栏 - 博客频道 - CSDN.NET</a></li>
+</ul>
+<a id="more"></a>
+<h3 id="统一变量"><a href="#统一变量" class="headerlink" title="统一变量"></a>统一变量</h3><p>为了下文中涉及到的各种变量被方便辨认，先统一各变量。</p>
+<ul>
+<li>字符串<strong> T, s</strong></li>
+<li>状态<strong> u, v</strong></li>
+<li>索引<strong> i</strong>, 从0开始</li>
+<li>symbol<strong> c</strong></li>
+</ul>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>以下定义均摘取自Hunt Zhan的Tutorial:</p>
+<ul>
+<li><strong>endpos(T,s)</strong>:所有在T中出现的s的结束位置(下标)集合.<br>例如ab在abcaba的结束下标是{1,4}</li>
+<li><strong> endpos-equivalent</strong>: 当两字符串s1和s2, endpos(T,s$_1$)=endpos(T,s$_2$).</li>
+</ul>
+<hr>
+<ul>
+<li><strong> substrings(u)</strong>: u可以识别字符串的集合,是T的子串组成.</li>
+<li><strong>longest(u)</strong>:substrings(u)最长的substring.(类似shortest(u))</li>
+<li><strong>maxlen(u)</strong>:longest(u)的长度.(类似minlen(u))</li>
+</ul>
+<hr>
+<ul>
+<li><strong>T$_i$</strong>:标示T中以T[i]结尾的prefix(也就是T[:i]).</li>
+<li><strong> v = link(u)</strong>:意为存在从u到v的suffix link,其中maxlen(v)+1=minlen(u)</li>
+<li><strong> Suffix-link path</strong> from u to v:从u到v的,一条用suffix link相连的路径.</li>
+<li><strong> trans(u,c)=v</strong>:表示从u到v存在state transition路径,该路径通过c标识.</li>
+<li><strong>$U_v={u_i|trans(u_i,c)=v}$</strong>.</li>
+</ul>
+<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p>以下定义均摘取自Hunt Zhan的Tutorial:</p>
+<ul>
+<li>$endpos(s_1)\supseteq endpos(s_2),iff s_1\sqsubset s_2$.</li>
+<li><del>substrings(u)的任意两个substrings必然是endpos-equivalent.(废话,每个substring的末字母都一样,那可不是endpos一样吗)</del></li>
+<li>substrings(u)中所有的子串必然是longest(u)的后缀.</li>
+<li>每个state对应一个“连续”(依次是前一个少一位的后缀)的suffix集合.(所以可以用longest(u)和shortest(u)代表substrings(u),即用两个串代表一个集合)</li>
+<li>如果trans(u,c)=v,那么必然往u的每个substring后面拼接c,得到的新的substrings集合包含于substrings(v).</li>
+<li>以同一个状态结尾的trans,带有相同的symbol.</li>
+<li>substrings(v)等于substrings(U$_v$)的并集.Uv中的states必然形成一条suffix-link path.</li>
+</ul>
+<h3 id="构造SAM"><a href="#构造SAM" class="headerlink" title="构造SAM"></a>构造SAM</h3><p>将T[i+1]插入到$T<em>i$对应的SAM中,那么新的SAM可以识别T$</em>{i+1}$的后缀集合.</p>
+<ul>
+<li><strong>重点1:这个集合,通过将T[i+1]拼接到T$_i$所有的后缀末尾得到.</strong></li>
+</ul>
+<p>为了得到T$_i$所有的后缀,我们利用Suffix-link path的性质:</p>
+<ul>
+<li><strong>重点2:访问suffix-link path from last to start上的每一个u,将所有的substring(u)合并即可.建立这些states和新建state cur的transition即可.</strong></li>
+</ul>
+<p>设p为suffix-link from last to start上当前正在处理的state,如果已经存在trans(p,T[i+1])=q,其中q是SAM已经存在的state.</p>
+<ul>
+<li><strong>重点3:此时原来的SAM可以识别T$_{i+1}$的suffix集合的子集,因此可以将state cur用suffix link指向某个state(pre).</strong></li>
+</ul>
+<p>此时,minlen(cur)=maxlen(p)+2,而minlen(cur)=maxlen(pre)+1,所以maxlen(pre)=maxlen(p)+1</p>
+<ul>
+<li><strong>重点4:检测q是否符合pre的条件:</strong><br><strong>1. 如果maxlen(q)=maxlen(p)+1,那么q就是pre,直接link(cur)=q.</strong><br><strong>2. 如果maxlen(q)&gt;maxlen(p)+1,意味着substrings(pre)$\subset$substrings(q),需要将满足pre条件的部分从q重分离出去</strong></li>
+</ul>
+<p>分离pre利用state transition的条件.</p>
+<ul>
+<li><strong>重点5:找到link(p’)=p,且trans(p’,T[i+1])=q的p’点.</strong></li>
+<li><strong>重点6:将U$_q$分为两组,在suffix link上p’的孩子状态(包括p’)设置为parents组,p的父亲状态(包括p)设置为children组</strong></li>
+</ul>
+<p>将pre从q分离出来:</p>
+<ul>
+<li><strong>重点7:新建状态sq,将children组的状态,trans指向sq</strong></li>
+<li><strong>重点8:trans(sq,c)=trans(q,c)</strong></li>
+<li><strong>重点9:link(sq)=link(q),link(q)=sq,link(cur)=sq</strong></li>
+</ul>
+<p>最后将cur设置为last,此次加入结束.</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>为T$_i$构建的SAM:</p>
+<ol>
+<li>start:指向start state.</li>
+<li>last:指向最后一个state. T$_i\in$substring(last).(应该是=longest(last))</li>
+<li>cur:新加入的state.</li>
+<li>p:suffix-link from last ot start处理过程中正在处理的state</li>
+</ol>
+<p>State u:</p>
+<ol>
+<li>maxlen(u)</li>
+<li>link(u)</li>
+<li>tran(u,$\sum$)</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
+          
+            <a href="/tags/SAM/" rel="tag">#SAM</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/10/面试题之“操作系统”/" rel="next" title="面试题之“操作系统”">
+                <i class="fa fa-chevron-left"></i> 面试题之“操作系统”
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/10/后缀自动机(SAM)学习笔记/"
+           data-title="后缀自动机SAM学习笔记" data-url="http://qutan.github.io/2016/12/10/后缀自动机(SAM)学习笔记/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/theavatar.jpg"
+               alt="Qutan" />
+          <p class="site-author-name" itemprop="name">Qutan</p>
+          <p class="site-description motion-element" itemprop="description">越了解，越敬畏。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Qutan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/345930427" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qutan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#统一变量"><span class="nav-number">2.</span> <span class="nav-text">统一变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">3.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质"><span class="nav-number">4.</span> <span class="nav-text">性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造SAM"><span class="nav-number">5.</span> <span class="nav-text">构造SAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构"><span class="nav-number">6.</span> <span class="nav-text">数据结构</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qutan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"chnqutan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

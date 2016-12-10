@@ -1,0 +1,839 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C++,面试题," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="语言基础
+关键词含义 const:对象在程序执行期间不能被修改 static:
+局部变量：函数调用期间保持值
+类变量：被所有的成员共享。如果是类的成员函数，用类：：函数名访问，只能访问静态数据。
+全局变量：作用范围是文件内extern:其他文件中可以得到已定义变量的引用mutable：可以通过成员函数修改">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试题之“C++基础”">
+<meta property="og:url" content="http://qutan.github.io/2016/12/10/面试题之“C++基础”/index.html">
+<meta property="og:site_name" content="Qutan'Blog">
+<meta property="og:description" content="语言基础
+关键词含义 const:对象在程序执行期间不能被修改 static:
+局部变量：函数调用期间保持值
+类变量：被所有的成员共享。如果是类的成员函数，用类：：函数名访问，只能访问静态数据。
+全局变量：作用范围是文件内extern:其他文件中可以得到已定义变量的引用mutable：可以通过成员函数修改">
+<meta property="og:updated_time" content="2016-12-10T11:37:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试题之“C++基础”">
+<meta name="twitter:description" content="语言基础
+关键词含义 const:对象在程序执行期间不能被修改 static:
+局部变量：函数调用期间保持值
+类变量：被所有的成员共享。如果是类的成员函数，用类：：函数名访问，只能访问静态数据。
+全局变量：作用范围是文件内extern:其他文件中可以得到已定义变量的引用mutable：可以通过成员函数修改">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://qutan.github.io/2016/12/10/面试题之“C++基础”/"/>
+
+
+  <title> 面试题之“C++基础” | Qutan'Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Qutan'Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                面试题之“C++基础”
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-10T18:52:04+08:00" content="2016-12-10">
+              2016-12-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/面试题目/" itemprop="url" rel="index">
+                    <span itemprop="name">面试题目</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/10/面试题之“C++基础”/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/面试题之“C++基础”/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="语言基础"><a href="#语言基础" class="headerlink" title="语言基础"></a>语言基础</h2><ol>
+<li>关键词含义<br> const:对象在程序执行期间不能被修改<br> static:<ul>
+<li>局部变量：函数调用期间保持值</li>
+<li>类变量：被所有的成员共享。如果是类的成员函数，用类：：函数名访问，只能访问静态数据。</li>
+<li>全局变量：作用范围是文件内<br>extern:其他文件中可以得到已定义变量的引用<br>mutable：可以通过成员函数修改</li>
+</ul>
+</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li>i+ + 和 + +i:<br> 前缀形式：表达式计算前完成自增或自减<br> 后缀形式：表达式计算后完成自增自减</li>
+<li>x&lt;<1 左移一位，相当于乘2="" x="">&gt;1 右移一位，相当于除2</1></li>
+<li>函数的声明中，参数名不重要，参数类型重要</li>
+<li>数组作为函数的参数，会退化为一个指向数组的指针</li>
+</ol>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><ol>
+<li><p>类成员函数</p>
+<ul>
+<li>在类内定义，默认是内联的</li>
+<li>在类外定义，使用范围解析运算符：：</li>
+</ul>
+</li>
+<li><p>类访问修饰符</p>
+<ul>
+<li>public：外部可以访问</li>
+<li>private:只有类成员函数和友元可以访问</li>
+<li>protect：在子类中可以访问</li>
+</ul>
+</li>
+<li><p>构造和析构</p>
+<ul>
+<li>构造：和类名相同，没有返回值。可以使用初始化列表来初始化值。</li>
+<li>析构：和构造相对，~</li>
+</ul>
+</li>
+<li><p>拷贝构造函数<br>classname(const classname &amp;obj):{}<br>复制对象；将对象作为函数参数</p>
+</li>
+<li><p>友元函数<br>定义在类外，声明在类内。可以访问类的私有和公有成员。</p>
+</li>
+<li><p>内联函数<br>相当于宏。在编译时，编译器会把该函数的代码副本放在每个调用它的地方。<br>内联函数必须和函数定义在一起，而不是声明。</p>
+</li>
+<li><p>this指针<br>this是所有成员函数的隐含参数，this-&gt;变量</p>
+</li>
+<li><p>指向类的指针<br>用类的指针访问成员变量和函数，必须用-&gt;</p>
+</li>
+<li><p>继承</p>
+<ul>
+<li>C++可以多继承</li>
+<li>继承类型 Public，protect,private,继承使得子类中的访问类型，最高为继承类型。</li>
+</ul>
+</li>
+<li><p>多态<br>使用指针指向子类方法时，会调用基类方法，属于静态绑定。<br>基类方法加上vitrual，会指向子类方法，变成动态绑定。</p>
+</li>
+<li><p>和结构体的区别<br>结构体也有成员函数和继承，主要的区别在于，结构体默认的访问控制是public，类是private。</p>
+</li>
+</ol>
+<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><ul>
+<li><p>const 和 #define区别</p>
+<ol>
+<li>const有数据类型，宏定义没有</li>
+<li>编译器会对const进行类型安全检查，而宏没有</li>
+<li>有些调试工具会对const进行调试，但不能对宏调试</li>
+</ol>
+</li>
+<li><p>类中的常量</p>
+<ol>
+<li>只能在构造函数的初始化列表中</li>
+<li>采用枚举型常量</li>
+</ol>
+</li>
+<li><p>const修饰成员函数</p>
+<ol>
+<li>不能调用其他非const函数</li>
+<li>不能修改数据成员</li>
+<li>const修饰成员函数后，mutable的成员变量可以修改</li>
+</ol>
+</li>
+<li><p>常量指针和指针常量</p>
+<ol>
+<li>常量指针： const int *p（从左往右念，先常量后指针）相当于一个敞亮的指针，即指针指向的值不能变，但是可以更改指向。</li>
+<li>指针常量： int * const p，即不能改变指向的指针。</li>
+</ol>
+</li>
+</ul>
+<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><ul>
+<li><p>引用和指针的区别</p>
+<ol>
+<li>引用在创建时必须初始化</li>
+<li>不能用NULl引用</li>
+<li>引用不能修改引用的关系</li>
+</ol>
+</li>
+<li><p>指针和数组的比较：</p>
+<ol>
+<li>数组在静态存储区或者栈上，数组名对应一块内存，地址和容量保持不变。</li>
+<li>指针指向任意类型的内存，常用指针操作动态内存。</li>
+</ol>
+</li>
+<li><p>指针使用的注意点：</p>
+<ol>
+<li>指针指向一个常量字符串，不能修改</li>
+<li>不能对数组名进行比较和复制</li>
+<li>计算内存容量是，sizeof(p)返回的是4，得到一个指针变量的字节数，相对应sizeof(char[])返回的数组所占的字节数。<strong>数组作为函数参数进行传递时，会退化为同类型指针</strong>。</li>
+</ol>
+</li>
+<li><p>数组指针和指针数组</p>
+<ol>
+<li>int (*ptr)[] 数组指针，指向整型数组的指针。</li>
+<li>int *ptr[]  指针数组，存放指针的数组</li>
+</ol>
+</li>
+</ul>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><ul>
+<li><p>三种分配方式：</p>
+<ol>
+<li>静态存储区：编译的时候就分配好了，整个运行期间都存在，如全局变量，static变量</li>
+<li>栈上面创建。函数内的局部变量都在栈上创建，函数结束时自动被释放。</li>
+<li>堆上分配，使用malloc和new分配，free和delete释放</li>
+</ol>
+</li>
+<li><p>常见内存错误：</p>
+<ol>
+<li>内存未分配成功，却使用。使用内存前，检查指针是否是NULL。</li>
+<li>未初始化就是用。例如数组没有初始化就是用。</li>
+<li>内存越界。</li>
+<li>内存泄露。分配后没有释放。</li>
+<li>释放了内存却继续使用。内存释放后，指针指向NULL。</li>
+</ol>
+</li>
+<li><p>free和delete后，指针地址不变，指针变成了野指针，这时候用null。</p>
+</li>
+<li><p>malloc 和new的区别<br>对于非内部变量，malloc不能执行对象的构造函数，free也不能调用析构函数</p>
+</li>
+</ul>
+<h2 id="函数的高级特性"><a href="#函数的高级特性" class="headerlink" title="函数的高级特性"></a>函数的高级特性</h2><ul>
+<li><p>重载</p>
+<ol>
+<li>函数参数（顺序，类型），返回值不同可以重载</li>
+<li>必须是在一个作用于</li>
+<li>c++不能重载C的程序，需要加入extern “C”</li>
+</ol>
+</li>
+<li><p>重写（覆盖）</p>
+<ol>
+<li>分别为子类和基类</li>
+<li>函数名子相同，参数相同</li>
+<li>基类函数有virtural关键字</li>
+</ol>
+</li>
+<li><p>隐藏</p>
+<ol>
+<li>派生类和基类函数名相同，参数不同，无论有没有virtual，基类被隐藏</li>
+<li>如果派生类和基类同名，参数相同，基类没有virtual，基类隐藏。（如有基类有virtual,是覆盖）</li>
+</ol>
+</li>
+<li><p>运算符重载<br>operator加上运算符来表示函数。运算符函数参数出现在左右两侧。</p>
+</li>
+<li><p>虚函数</p>
+<ol>
+<li>为多态而生</li>
+<li>析构函数建议设置为虚函数</li>
+<li>构造函数不能是虚函数</li>
+<li>虚函数只有声明没有定义是纯虚函数</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag">#C++</a>
+          
+            <a href="/tags/面试题/" rel="tag">#面试题</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/10/面试题之“海量数据处理”/" rel="next" title="面试题之“海量数据处理”">
+                <i class="fa fa-chevron-left"></i> 面试题之“海量数据处理”
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/10/面试题之“计算机网络”/" rel="prev" title="面试题之“计算机网络”">
+                面试题之“计算机网络” <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/10/面试题之“C++基础”/"
+           data-title="面试题之“C++基础”" data-url="http://qutan.github.io/2016/12/10/面试题之“C++基础”/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/theavatar.jpg"
+               alt="Qutan" />
+          <p class="site-author-name" itemprop="name">Qutan</p>
+          <p class="site-description motion-element" itemprop="description">越了解，越敬畏。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Qutan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/345930427" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qutan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#语言基础"><span class="nav-number">1.</span> <span class="nav-text">语言基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向对象"><span class="nav-number">2.</span> <span class="nav-text">面向对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const"><span class="nav-number">3.</span> <span class="nav-text">const</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针"><span class="nav-number">4.</span> <span class="nav-text">指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">5.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数的高级特性"><span class="nav-number">6.</span> <span class="nav-text">函数的高级特性</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qutan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"chnqutan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

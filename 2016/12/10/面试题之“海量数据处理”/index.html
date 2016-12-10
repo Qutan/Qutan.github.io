@@ -1,0 +1,732 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法,面试题,海量数据," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="常用方法
+分而治之/hash映射 + hash统计 + 堆/快速/归并排序；
+双层桶划分
+Bloom filter/Bitmap；
+Trie树/数据库/倒排索引；
+外排序；
+分布式处理之Hadoop/Mapreduce
+SimHash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试题之“海量数据处理”">
+<meta property="og:url" content="http://qutan.github.io/2016/12/10/面试题之“海量数据处理”/index.html">
+<meta property="og:site_name" content="Qutan'Blog">
+<meta property="og:description" content="常用方法
+分而治之/hash映射 + hash统计 + 堆/快速/归并排序；
+双层桶划分
+Bloom filter/Bitmap；
+Trie树/数据库/倒排索引；
+外排序；
+分布式处理之Hadoop/Mapreduce
+SimHash">
+<meta property="og:updated_time" content="2016-12-10T11:03:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试题之“海量数据处理”">
+<meta name="twitter:description" content="常用方法
+分而治之/hash映射 + hash统计 + 堆/快速/归并排序；
+双层桶划分
+Bloom filter/Bitmap；
+Trie树/数据库/倒排索引；
+外排序；
+分布式处理之Hadoop/Mapreduce
+SimHash">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://qutan.github.io/2016/12/10/面试题之“海量数据处理”/"/>
+
+
+  <title> 面试题之“海量数据处理” | Qutan'Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Qutan'Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                面试题之“海量数据处理”
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-10T18:48:30+08:00" content="2016-12-10">
+              2016-12-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/面试题目/" itemprop="url" rel="index">
+                    <span itemprop="name">面试题目</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/10/面试题之“海量数据处理”/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/面试题之“海量数据处理”/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ol>
+<li>分而治之/hash映射 + hash统计 + 堆/快速/归并排序；</li>
+<li>双层桶划分</li>
+<li>Bloom filter/Bitmap；</li>
+<li>Trie树/数据库/倒排索引；</li>
+<li>外排序；</li>
+<li>分布式处理之Hadoop/Mapreduce</li>
+<li>SimHash</li>
+</ol>
+<a id="more"></a>
+<h2 id="分治-hash映射-hash统计-堆-归并排序"><a href="#分治-hash映射-hash统计-堆-归并排序" class="headerlink" title="分治/hash映射 + hash统计 + 堆/归并排序"></a>分治/hash映射 + hash统计 + 堆/归并排序</h2><h3 id="分而治之"><a href="#分而治之" class="headerlink" title="分而治之"></a>分而治之</h3><p>数据无法放入内存，所以分成小文件。<br>采用Hash取模进行等价映射。采用这种方法可以将巨大的文件进行等价分割（注意：符合一定规律的数据要被分割到同一个小文件）变成若干个小文件再进行处理。<br>如果大量重复的，去重之后的结果能够放入内存，就通过hash表直接统计。</p>
+<h3 id="Hash统计"><a href="#Hash统计" class="headerlink" title="Hash统计"></a>Hash统计</h3><p>我们通过Hash映射将大文件分割为小文件后，就可以采用HashMap这样的存储结构来对小文件中的关注项进行频率统计。具体的做法是将要进行统计的Item作为HashMap的key，此Item出现的次数作为value。 </p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>排序找个每个小文件中出现次数最多的，然后再比较所有最多的。<br>从N个中找到K大个，通过堆排序最好。O(nlogk)<br>再从已经排序好的文件找最大的，用归并效果好。</p>
+<p>###题目1：访问百度最多的IP</p>
+<ol>
+<li>hash(IP)%1024分成小文件</li>
+<li>每个小文件建hashmap，找到最大的值</li>
+<li>比较每个小文件的最大值</li>
+</ol>
+<p>###题目2：两个文件相同URL</p>
+<ol>
+<li>对AB两个相同的文件采用hash映射分成小文件</li>
+<li>对每个小文件对，对小的文件建立一个hashSet,然后遍历大文件的那个文件，看能否再小文件中找到对应的值，如果找到加入结果文件</li>
+</ol>
+<p>###题目3每行一个次/query,按频次排序</p>
+<ol>
+<li>如果hash映射后能够放入内存，那么建立hashmap进行统计</li>
+<li>放不进内容，hash映射取模后分成若干个小文件，分别建立hashmap</li>
+<li>如果取最大的K个，则用堆排序。或者用任意排序</li>
+<li>之后对结果用归并进行汇总</li>
+</ol>
+<h2 id="双层桶划分"><a href="#双层桶划分" class="headerlink" title="双层桶划分"></a>双层桶划分</h2><p>就是分治的思想</p>
+<h3 id="题目1：找中位数"><a href="#题目1：找中位数" class="headerlink" title="题目1：找中位数"></a>题目1：找中位数</h3><p>假设整数是32位的，根据每个整数二进制前的5位，可以划分为32个不同的桶，如果某个桶的个数在内存中放不下，则继续划分，知道内存可以放下为止；然后统计每个桶中的数的个数，就可以中位数一定出现在哪个桶中，而且知道是该桶中第几大数，因为桶的划分是根据二进制前缀来进行划分的，桶之间是排好序的。</p>
+<h2 id="Bloom-Filter"><a href="#Bloom-Filter" class="headerlink" title="Bloom Filter"></a>Bloom Filter</h2><p>当一个元素被加入集合时，通过K个Hash函数将这个元素映射成一个位阵列（Bit array）中的K个点，把它们置为1。检索时，我们只要看看这些点是不是都是1就（大约）知道集合中有没有它了。<br>Bloom Filter通过极少的错误换取了存储空间的极大节省。<br>主要的四个参数：哈希函数取值，哈希函数的个数k、位数组大小m、加入的字符串数量n。<br>m/n的比值越大越好，比较越大，误判率会越代。<br>适用于判断重复。如URL判断重复。</p>
+<h2 id="BitMap"><a href="#BitMap" class="headerlink" title="BitMap"></a>BitMap</h2><p>每一个数字是一位，占用极少的空间。</p>
+<h3 id="查电话号码"><a href="#查电话号码" class="headerlink" title="查电话号码"></a>查电话号码</h3><p>已知某个文件内包含一些电话号码，每个号码为8位数字，统计不同号码的个数，建立一个0-99999999的bitmap，一共999wbit，差不多12m，然后便利这个文件，如果文件里有这个，记为1，没有记为0，最后统计1的个数。</p>
+<h3 id="题目1：找重复的数"><a href="#题目1：找重复的数" class="headerlink" title="题目1：找重复的数"></a>题目1：找重复的数</h3><p>每个数字2bit位，如果没有是00，如果有01,大于1的都是10，最后把10的保存起来。</p>
+<p>##Trie树<br>Trie 的核心思想是空间换时间,利用字符串的公共前缀来降低查询时间的开销以达到提高效率的目的。<br>它有 3 个基本性质:</p>
+<ol>
+<li>根节点不包含字符,除根节点外每一个节点都只包含一个字符。</li>
+<li>从根节点到某一节点,路径上经过的字符连接起来,为该节点对应的字符串。</li>
+<li>每个节点的所有子节点包含的字符都不相同。</li>
+</ol>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>倒排索引((Inverted index))是一种索引方法,被用来存储在全文搜索下某个单词在一个文档或者一组文档中的存储位置的映射,常被应用于搜索引擎和关键字查询的问题中。而倒排索引则是单词指向了<br>包含它的文档。</p>
+<h2 id="外排序"><a href="#外排序" class="headerlink" title="外排序"></a>外排序</h2><p>排序+归并</p>
+<p>###大数据量进行排序<br>分成若干部分，然后对每一个小部分进行排序，最后进行归并。</p>
+<p>##MapReduce<br>MapReduce 致力于解决大规模数据处理的问题,因此在设计之初就考虑了数据的局部性原理,利用局 部性原理将整个问题分而治之。MapReduce 集群由普通 PC 机构成,为无共享式架构。在处理之前,将数 据集分布至各个节点。处理时,每个节点就近读取本地存储的数据处理(map),将处理后的数据进行合 并(combine)、排序(shuffle and sort)后再分发(至 reduce 节点),避免了大量数据的传输,提高了处 理效率。无共享式架构的另一个好处是配合复制(replication)策略,集群可以具有良好的容错性,一部分 节点的 down 机对集群的正常工作不会造成影响。</p>
+<h2 id="Simhash"><a href="#Simhash" class="headerlink" title="Simhash"></a>Simhash</h2><p>处理网页去重的问题。主要思想是降维,将高维的特征向量 映射成低维的特征向量,通过两个向量的 Hamming Distance 来确定文章是否重复或者高度近似。<br>过程：分词、hash、加权、合并、降维</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
+          
+            <a href="/tags/面试题/" rel="tag">#面试题</a>
+          
+            <a href="/tags/海量数据/" rel="tag">#海量数据</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/10/深度优先搜索(DFS)学习笔记/" rel="next" title="深度优先搜索(DFS)学习笔记">
+                <i class="fa fa-chevron-left"></i> 深度优先搜索(DFS)学习笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/10/面试题之“C++基础”/" rel="prev" title="面试题之“C++基础”">
+                面试题之“C++基础” <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/10/面试题之“海量数据处理”/"
+           data-title="面试题之“海量数据处理”" data-url="http://qutan.github.io/2016/12/10/面试题之“海量数据处理”/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/theavatar.jpg"
+               alt="Qutan" />
+          <p class="site-author-name" itemprop="name">Qutan</p>
+          <p class="site-description motion-element" itemprop="description">越了解，越敬畏。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Qutan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/345930427" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qutan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用方法"><span class="nav-number">1.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分治-hash映射-hash统计-堆-归并排序"><span class="nav-number">2.</span> <span class="nav-text">分治/hash映射 + hash统计 + 堆/归并排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分而治之"><span class="nav-number">2.1.</span> <span class="nav-text">分而治之</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash统计"><span class="nav-number">2.2.</span> <span class="nav-text">Hash统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序"><span class="nav-number">2.3.</span> <span class="nav-text">排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双层桶划分"><span class="nav-number">3.</span> <span class="nav-text">双层桶划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目1：找中位数"><span class="nav-number">3.1.</span> <span class="nav-text">题目1：找中位数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bloom-Filter"><span class="nav-number">4.</span> <span class="nav-text">Bloom Filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BitMap"><span class="nav-number">5.</span> <span class="nav-text">BitMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查电话号码"><span class="nav-number">5.1.</span> <span class="nav-text">查电话号码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目1：找重复的数"><span class="nav-number">5.2.</span> <span class="nav-text">题目1：找重复的数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#倒排索引"><span class="nav-number">6.</span> <span class="nav-text">倒排索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外排序"><span class="nav-number">7.</span> <span class="nav-text">外排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Simhash"><span class="nav-number">8.</span> <span class="nav-text">Simhash</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qutan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"chnqutan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

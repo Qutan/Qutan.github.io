@@ -1,0 +1,743 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法,Leetcode,DFS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="DFS
+核心思想
+选定起始状态、候选集
+设定终止条件
+对冗余去重（包括退出条件）
+将中间过程保存在一个列表里，在终止的时候保存到输出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度优先搜索(DFS)学习笔记">
+<meta property="og:url" content="http://qutan.github.io/2016/12/10/深度优先搜索(DFS)学习笔记/index.html">
+<meta property="og:site_name" content="Qutan'Blog">
+<meta property="og:description" content="DFS
+核心思想
+选定起始状态、候选集
+设定终止条件
+对冗余去重（包括退出条件）
+将中间过程保存在一个列表里，在终止的时候保存到输出">
+<meta property="og:updated_time" content="2016-12-10T13:14:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度优先搜索(DFS)学习笔记">
+<meta name="twitter:description" content="DFS
+核心思想
+选定起始状态、候选集
+设定终止条件
+对冗余去重（包括退出条件）
+将中间过程保存在一个列表里，在终止的时候保存到输出">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://qutan.github.io/2016/12/10/深度优先搜索(DFS)学习笔记/"/>
+
+
+  <title> 深度优先搜索(DFS)学习笔记 | Qutan'Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Qutan'Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                深度优先搜索(DFS)学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-10T18:15:55+08:00" content="2016-12-10">
+              2016-12-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/10/深度优先搜索(DFS)学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/深度优先搜索(DFS)学习笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>DFS</p>
+<h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><ol>
+<li>选定起始状态、候选集</li>
+<li>设定终止条件</li>
+<li>对冗余去重（包括退出条件）</li>
+<li>将中间过程保存在一个列表里，在终止的时候保存到输出</li>
+</ol>
+<a id="more"></a>
+<h3 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h3><p>开始的状态一般都是对全候选集，选定第一个。而递归的状态应该是solve(目标值，候选集，中间过程，结果集)</p>
+<h3 id="候选集"><a href="#候选集" class="headerlink" title="候选集"></a>候选集</h3><p>情况分两种，可重复选，不可重复选</p>
+<ul>
+<li>可重复选，候选集是原候选集</li>
+<li>不可重复选，候选集是其他元素:<br>  还要分成两种情况：<ol>
+<li>有序，候选集是是删掉这个元素的其他元素。通过tmp=a[i],del tmp[i]实现。</li>
+<li>无序，是之后的其他元素。通过for(index,len(a))实现。</li>
+</ol>
+</li>
+</ul>
+<h3 id="终止条件"><a href="#终止条件" class="headerlink" title="终止条件"></a>终止条件</h3><p>常见的有3种：</p>
+<ol>
+<li>全排列，终止条件是候选集为空，或者是已选内容长度等于原序列长度。</li>
+<li>n中选k个，终止条件是已选内容长度等于k</li>
+<li>某个序列和是x，终止条件和是x</li>
+</ol>
+<h3 id="去冗余"><a href="#去冗余" class="headerlink" title="去冗余"></a>去冗余</h3><ol>
+<li>候选集有重复：<br><del>例如[2，1，2]，无论题设是什么，如果不加判断总会有两个[1，2，2]。<br>应该每次循环时，判断，这个数前面是否有一样的数，如果有则跳过这个数。</del>(如果不能重复选会出现问题，只能在最后去重)<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> nums[i] <span class="keyword">in</span> nums[:i]:</div><div class="line">	<span class="keyword">continue</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>类似的如果是求和问题，如果出现当前值大于目标和，则应跳过这个数，或者先对候选集排序，条件成立时，break而不是continue。应该当前值不满足，后面比它大数一定不满足。<br>不建议在输出前再做判断，增加很大的时间消耗。</p>
+<ol>
+<li>结果无序<br>结果无序都是求和问题，不是排列问题，即所求的结果是无序的。所以从1号元素深度搜索之后，从2号元素开始的深度搜索就不应该考虑1号（1号搜索考虑2，和2号考虑1是一种情况）<br>所以递归函数中要加入当前索引。<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(self,target,path,index,result,candidates)</span>:</span></div><div class="line">    <span class="keyword">if</span> target==<span class="number">0</span>:</div><div class="line">        result.append(path)</div><div class="line"></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(candidates)):</div><div class="line">            <span class="keyword">if</span> candidates[i]&gt;target:</div><div class="line">                <span class="keyword">break</span></div><div class="line">            self.solve(target-candidates[i],path+[candidates[i]],i,result,candidates)</div><div class="line"></div><div class="line">        <span class="keyword">return</span> result</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>结果无序分为两种，分为可否重复选和不可重复选。如果是可以重复选，那么每次递归的index还是当前i，不可重复选,则每次递归的index是i+1。</p>
+<h3 id="中间过程保存"><a href="#中间过程保存" class="headerlink" title="中间过程保存"></a>中间过程保存</h3><p>计数就保存一个整数，过程就保存列表。</p>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><blockquote>
+<p>Leetcode 77.Combination</p>
+</blockquote>
+<h3 id="解题思路思路"><a href="#解题思路思路" class="headerlink" title="解题思路思路"></a>解题思路思路</h3><ul>
+<li>起始状态：选定任意字符</li>
+<li>候选集：除了该字符外的其他字符</li>
+<li>终止条件：已经选定的字符串长度等于要求的长度</li>
+<li>冗余：无序类冗余，候选集的选择从i+1开始</li>
+</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">combine</span><span class="params">(self, n, k)</span>:</span></div><div class="line">		<span class="string">"""</span></div><div class="line">		:type n: int</div><div class="line">		:type k: int</div><div class="line">		:rtype: List[List[int]]</div><div class="line">		"""</div><div class="line">		result = []</div><div class="line">		n = range(<span class="number">1</span>,n+<span class="number">1</span>)</div><div class="line">		self.solve(n, k, <span class="number">0</span>, [], result)</div><div class="line">		<span class="keyword">return</span> result</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(self, n, k, index, path, result)</span>:</span></div><div class="line">		<span class="keyword">if</span> k == <span class="number">0</span>:</div><div class="line">			result.append(path)</div><div class="line">			<span class="keyword">return</span> result</div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			<span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(n)):</div><div class="line">				self.solve(n,k<span class="number">-1</span>,i+<span class="number">1</span>,path+[n[i]],result)</div></pre></td></tr></table></figure>
+<h2 id="全排列（不可重复）"><a href="#全排列（不可重复）" class="headerlink" title="全排列（不可重复）"></a>全排列（不可重复）</h2><blockquote>
+<p>LeetCode 46</p>
+</blockquote>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>和组合类似，但是从无序变成了有序，所以更改两个地方，一个是k保持为len(a)，另外候选集的选择从无序的选择变成有序的选择。</p>
+<p>###代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">		<span class="function"><span class="keyword">def</span> <span class="title">permute</span><span class="params">(self, nums)</span>:</span></div><div class="line">			<span class="string">"""</span></div><div class="line">			:type nums: List[int]</div><div class="line">			:rtype: List[List[int]]</div><div class="line">			"""</div><div class="line">			result = []</div><div class="line">			self.solve(nums, len(nums), result, [])</div><div class="line">			<span class="keyword">return</span> result</div><div class="line"></div><div class="line">		<span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(self, nums, length, result, path)</span>:</span></div><div class="line">			<span class="keyword">if</span> length == <span class="number">0</span>:</div><div class="line">				result.append(path)</div><div class="line">			<span class="keyword">else</span>:</div><div class="line">				<span class="keyword">for</span> i <span class="keyword">in</span> nums:</div><div class="line">					tmp = nums[:]</div><div class="line">					tmp.remove(i)</div><div class="line">					self.solve(tmp, length - <span class="number">1</span>, result, path + [i])</div><div class="line"></div><div class="line">			<span class="keyword">return</span> result</div><div class="line"></div><div class="line"></div><div class="line">s = Solution()</div><div class="line"><span class="keyword">print</span> s.permute([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</div></pre></td></tr></table></figure></p>
+<h2 id="全排列（有重复元素）"><a href="#全排列（有重复元素）" class="headerlink" title="全排列（有重复元素）"></a>全排列（有重复元素）</h2><blockquote>
+<p>LeetCode 47</p>
+</blockquote>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>和无重复元素的区别就在于判断是否这个元素已经出现过，去冗余。</p>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">permuteUnique</span><span class="params">(self, nums)</span>:</span></div><div class="line">		<span class="string">"""</span></div><div class="line">		:type nums: List[int]</div><div class="line">		:rtype: List[List[int]]</div><div class="line">		"""</div><div class="line">		result = []</div><div class="line">		self.solve(nums, len(nums), result, [])</div><div class="line">		<span class="keyword">return</span> result</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(self, nums, length, result, path)</span>:</span></div><div class="line">		<span class="keyword">if</span> length == <span class="number">0</span>:</div><div class="line">			result.append(path)</div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			<span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</div><div class="line">				<span class="comment"># 去重复元素的冗余</span></div><div class="line">				<span class="keyword">if</span> nums[i] <span class="keyword">in</span> nums[:i]:</div><div class="line">					<span class="keyword">continue</span></div><div class="line">				tmp = nums[:]</div><div class="line">				tmp.remove(nums[i])</div><div class="line">				self.solve(tmp, length - <span class="number">1</span>, result, path + [nums[i]])</div><div class="line"></div><div class="line">		<span class="keyword">return</span> result</div><div class="line">		</div><div class="line">s  = Solution()</div><div class="line"><span class="keyword">print</span> s.permuteUnique([<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>])</div></pre></td></tr></table></figure>
+<h2 id="数组组合和（不可重复选）"><a href="#数组组合和（不可重复选）" class="headerlink" title="数组组合和（不可重复选）"></a>数组组合和（不可重复选）</h2><blockquote>
+<p>Leetcode 40 Combination sum</p>
+</blockquote>
+<p>###解题思路<br>可以看做是第一题“组合”的进化版，首先是终止条件变成了差为0。加入一个退出条件candidates[i]&gt;targe。加入一个去冗余条件（因为元素可能重复）</p>
+<p>###代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">combinationSum2</span><span class="params">(self, candidates, target)</span>:</span></div><div class="line">		<span class="string">"""</span></div><div class="line">		:type candidates: List[int]</div><div class="line">		:type target: int</div><div class="line">		:rtype: List[List[int]]</div><div class="line">		"""</div><div class="line">		self.result = []</div><div class="line">		self.solve(target, [], candidates,<span class="number">0</span>)</div><div class="line">		<span class="keyword">return</span> self.result</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(self, target, path, candidates,index)</span>:</span></div><div class="line">		<span class="keyword">if</span> target == <span class="number">0</span>:</div><div class="line">			self.result.append(path)</div><div class="line"></div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			<span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(candidates)):</div><div class="line">				<span class="keyword">if</span> candidates[i] &gt; target:</div><div class="line">					<span class="keyword">continue</span></div><div class="line">				<span class="comment"># 这里有问题，如果这样的话，会造成[5,5],10这样的输入没有结果了，所以这个应该还是的需要从最后判断是否退出</span></div><div class="line">				<span class="keyword">if</span> candidates[i] <span class="keyword">in</span> candidates[:i]:</div><div class="line">					<span class="keyword">continue</span></div><div class="line">				</div><div class="line">				self.solve(target - candidates[i], path + [candidates[i]], candidates,i+<span class="number">1</span>)</div><div class="line"></div><div class="line"></div><div class="line">s = Solution()</div><div class="line"><span class="keyword">print</span> s.combinationSum2([<span class="number">2</span>,<span class="number">5</span>],<span class="number">9</span>)</div></pre></td></tr></table></figure></p>
+<h2 id="数组组合和（可以重复选）"><a href="#数组组合和（可以重复选）" class="headerlink" title="数组组合和（可以重复选）"></a>数组组合和（可以重复选）</h2><blockquote>
+<p>Leetcode 41 Combination sum</p>
+</blockquote>
+<p>###解题思路<br>和上一题唯一的区别，在于递归的时候index不是i+1，而是还是i（因为可以继续选自己）</p>
+<p>###代码<br>略</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
+          
+            <a href="/tags/Leetcode/" rel="tag">#Leetcode</a>
+          
+            <a href="/tags/DFS/" rel="tag">#DFS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/31/动态规划(DP)学习笔记/" rel="next" title="动态规划(DP)学习笔记">
+                <i class="fa fa-chevron-left"></i> 动态规划(DP)学习笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/10/面试题之“海量数据处理”/" rel="prev" title="面试题之“海量数据处理”">
+                面试题之“海量数据处理” <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/10/深度优先搜索(DFS)学习笔记/"
+           data-title="深度优先搜索(DFS)学习笔记" data-url="http://qutan.github.io/2016/12/10/深度优先搜索(DFS)学习笔记/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/theavatar.jpg"
+               alt="Qutan" />
+          <p class="site-author-name" itemprop="name">Qutan</p>
+          <p class="site-description motion-element" itemprop="description">越了解，越敬畏。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Qutan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/345930427" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qutan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#核心思想"><span class="nav-number">1.</span> <span class="nav-text">核心思想</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态"><span class="nav-number">1.1.</span> <span class="nav-text">状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#候选集"><span class="nav-number">1.2.</span> <span class="nav-text">候选集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#终止条件"><span class="nav-number">1.3.</span> <span class="nav-text">终止条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去冗余"><span class="nav-number">1.4.</span> <span class="nav-text">去冗余</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间过程保存"><span class="nav-number">1.5.</span> <span class="nav-text">中间过程保存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合"><span class="nav-number">2.</span> <span class="nav-text">组合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路思路"><span class="nav-number">2.1.</span> <span class="nav-text">解题思路思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全排列（不可重复）"><span class="nav-number">3.</span> <span class="nav-text">全排列（不可重复）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">3.1.</span> <span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全排列（有重复元素）"><span class="nav-number">4.</span> <span class="nav-text">全排列（有重复元素）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路-1"><span class="nav-number">4.1.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-1"><span class="nav-number">4.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组组合和（不可重复选）"><span class="nav-number">5.</span> <span class="nav-text">数组组合和（不可重复选）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组组合和（可以重复选）"><span class="nav-number">6.</span> <span class="nav-text">数组组合和（可以重复选）</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qutan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"chnqutan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

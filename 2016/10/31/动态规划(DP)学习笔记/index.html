@@ -1,0 +1,754 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法,Leetcode,DP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="四个步骤
+设计暴力解法，找到冗余暴力的关键在于如何找到最优子结构；子结构没有后效性（即N可由N-1得出，N和N-1之前的状态的状态无关）。
+设计状态并保存（一维、二维数组）根据子问题得到状态。
+递归式（状态转移方程）
+自底向上求解最优解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态规划(DP)学习笔记">
+<meta property="og:url" content="http://qutan.github.io/2016/10/31/动态规划(DP)学习笔记/index.html">
+<meta property="og:site_name" content="Qutan'Blog">
+<meta property="og:description" content="四个步骤
+设计暴力解法，找到冗余暴力的关键在于如何找到最优子结构；子结构没有后效性（即N可由N-1得出，N和N-1之前的状态的状态无关）。
+设计状态并保存（一维、二维数组）根据子问题得到状态。
+递归式（状态转移方程）
+自底向上求解最优解">
+<meta property="og:updated_time" content="2016-12-10T13:14:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="动态规划(DP)学习笔记">
+<meta name="twitter:description" content="四个步骤
+设计暴力解法，找到冗余暴力的关键在于如何找到最优子结构；子结构没有后效性（即N可由N-1得出，N和N-1之前的状态的状态无关）。
+设计状态并保存（一维、二维数组）根据子问题得到状态。
+递归式（状态转移方程）
+自底向上求解最优解">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://qutan.github.io/2016/10/31/动态规划(DP)学习笔记/"/>
+
+
+  <title> 动态规划(DP)学习笔记 | Qutan'Blog </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Qutan'Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                动态规划(DP)学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-31T15:07:59+08:00" content="2016-10-31">
+              2016-10-31
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/31/动态规划(DP)学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/动态规划(DP)学习笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="四个步骤"><a href="#四个步骤" class="headerlink" title="四个步骤"></a>四个步骤</h2><ol>
+<li>设计暴力解法，找到冗余<br>暴力的关键在于如何找到最优子结构；<br>子结构没有后效性（即N可由N-1得出，N和N-1之前的状态的状态无关）。</li>
+<li>设计状态并保存（一维、二维数组）<br>根据子问题得到状态。</li>
+<li>递归式（状态转移方程）</li>
+<li>自底向上求解最优解</li>
+</ol>
+<a id="more"></a>
+<h2 id="最长递增子序列"><a href="#最长递增子序列" class="headerlink" title="最长递增子序列"></a>最长递增子序列</h2><blockquote>
+<p>leetcode 300.</p>
+</blockquote>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
+<li>数组A存放各个元素，要想得到结尾是A[i]的最长子序列，我们需要得到以在A[:i]中，小于A[i]的数结尾的最长子序列。我们将以第i位元素结尾的最长子序列记做mem[i]。</li>
+<li>可以容易得到，mem[0]=1。</li>
+<li>之后对i&gt;=1,我们要找到A[:i]中小于A[i]的数的索引<br><code>indexs = [j for j in range(i) if arr[i]&gt;arr[j]]</code></li>
+<li>然后找到mem[indexs]中最大数，加1即为mem[i]的值<br><code>mem[i]=max([mem[x] for x in indexs])+1</code></li>
+<li>这里要注意，如果indexs==[]，则直接让mem[i]=1</li>
+<li>最后max(mem)即为所求</li>
+</ol>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">	<span class="comment"># -*-coding:utf8-*-</span></div><div class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">()</span>:</span></div><div class="line">		<span class="function"><span class="keyword">def</span> <span class="title">lengthOfLIS</span><span class="params">(self, arr)</span>:</span></div><div class="line">			<span class="keyword">if</span> len(arr) == <span class="number">0</span>:</div><div class="line">				<span class="keyword">return</span> <span class="number">0</span></div><div class="line">			mem = [<span class="number">0</span>] * len(arr)</div><div class="line">			<span class="keyword">for</span> i <span class="keyword">in</span> range(len(arr)):</div><div class="line">				<span class="keyword">if</span> i == <span class="number">0</span>:</div><div class="line">					mem[i] = <span class="number">1</span></div><div class="line">				<span class="keyword">else</span>:</div><div class="line">					<span class="comment"># 找到小于arr[i]的索引</span></div><div class="line">					indexs = [j <span class="keyword">for</span> j <span class="keyword">in</span> range(i) <span class="keyword">if</span> arr[i] &gt; arr[j]]</div><div class="line">					<span class="keyword">if</span> len(indexs) &gt; <span class="number">0</span>:</div><div class="line">						<span class="comment"># 满足小于arr[i]的索引的mem值的最大值</span></div><div class="line">						mem[i] = max([mem[x] <span class="keyword">for</span> x <span class="keyword">in</span> indexs]) + <span class="number">1</span></div><div class="line">					<span class="keyword">else</span>:</div><div class="line">						mem[i] = <span class="number">1</span></div><div class="line">			<span class="keyword">return</span> max(mem)</div><div class="line">==</div><div class="line">==</div><div class="line">	s = Solution()</div><div class="line">	<span class="keyword">print</span> s.lengthOfLIS([<span class="number">10</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">101</span>, <span class="number">18</span>])</div></pre></td></tr></table></figure>
+<h2 id="房屋抢劫"><a href="#房屋抢劫" class="headerlink" title="房屋抢劫"></a>房屋抢劫</h2><blockquote>
+<p>leetcode 198. House Robber</p>
+</blockquote>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
+<li>“最多抢多少钱啊”，最大化题设，是个动态规划题目。</li>
+<li>一共有len(nums)个房子，问抢到最后一个房子nums[-1]能抢多少钱</li>
+<li>定义函数sob(idx,num)是抢到第idx有的钱</li>
+<li>到idx能抢到的钱有两种可能：<ul>
+<li>抢了idx,说明idx-1是不能抢的，现在手里的钱应该是sob(idx-2,nums)+nums[idx]</li>
+<li>没有抢idx,说明抢了idx-1，现在手里的钱是sob(idx-1,nums)</li>
+</ul>
+</li>
+<li>所以现在能有的钱最多的就是max(sob(idx-2,nums)+nums[idx],sob(idx-1,nums))</li>
+<li>先看终止条件，如果idx==0,最多抢nums[idx],如果idx==1,最多抢max(nums[0],nums[1])</li>
+<li>为了计算方便，我们将中间结果保存在数组dp里,给定初值dp[0]=nums[0],dp[1]=max(nums[0],nums[1]),其他为-1</li>
+</ol>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums)</span>:</span></div><div class="line">		<span class="string">"""</span></div><div class="line">		:type nums: List[int]</div><div class="line">		:rtype: int</div><div class="line">		"""</div><div class="line">		<span class="keyword">if</span> len(nums)==<span class="number">0</span>:</div><div class="line">			<span class="keyword">return</span> <span class="number">0</span></div><div class="line">		<span class="keyword">if</span> len(nums)==<span class="number">1</span>:</div><div class="line">			<span class="keyword">return</span> nums[<span class="number">0</span>]</div><div class="line">		<span class="keyword">if</span> len(nums)==<span class="number">2</span>:</div><div class="line">			<span class="keyword">return</span> max(nums[<span class="number">0</span>],nums[<span class="number">1</span>])</div><div class="line"></div><div class="line">		dp = [<span class="number">-1</span>]*len(nums)</div><div class="line">		dp[<span class="number">0</span>] = nums[<span class="number">0</span>]</div><div class="line">		dp[<span class="number">1</span>] = max(nums[:<span class="number">2</span>])</div><div class="line">		<span class="keyword">return</span> self.robmax(nums,len(nums)<span class="number">-1</span>,dp)</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">robmax</span><span class="params">(self,nums,idx,dp)</span>:</span></div><div class="line">		<span class="keyword">if</span> dp[idx]!=<span class="number">-1</span>:</div><div class="line">			<span class="keyword">return</span> dp[idx]</div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			dp[idx]=max(self.robmax(nums,idx<span class="number">-1</span>,dp),</div><div class="line">			            self.robmax(nums,idx<span class="number">-2</span>,dp)+nums[idx])</div><div class="line">			<span class="keyword">return</span> dp[idx]</div></pre></td></tr></table></figure>
+<h2 id="找零钱问题"><a href="#找零钱问题" class="headerlink" title="找零钱问题"></a>找零钱问题</h2><h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>有2,3,5,7元的硬币，问最少几枚可以凑够12元。（感觉完背包也是一个思路）</p>
+<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
+<li>定义状态v(i)是凑够i元钱最少的硬币数</li>
+<li>对每个状态，对每个硬币集合中小于等于i的情况j，都会有一个子问题v(i-j)</li>
+<li>所以对于每个状态的最小值，就是找到小于i情况j中v(i-j)+1</li>
+<li>终止条件<ul>
+<li>i&lt;0 返回inf（实际上不会出现这种情况）</li>
+<li>i=0 返回0</li>
+<li>i&lt;min(coins) 返回inf(相当于不存在小于i的集合)</li>
+</ul>
+</li>
+</ol>
+<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># PYTHON中默认递归次数1000</span></div><div class="line"><span class="keyword">import</span> sys</div><div class="line">sys.setrecursionlimit(<span class="number">1000000</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(self, coins, amount)</span>:</span></div><div class="line">		<span class="string">"""</span></div><div class="line">		:type coins: List[int]</div><div class="line">		:type amount: int</div><div class="line">		:rtype: int</div><div class="line">		"""</div><div class="line">		dp = [float(<span class="string">'inf'</span>)] * (amount + <span class="number">1</span>)</div><div class="line">		res = self.mincoins(amount, coins, dp)</div><div class="line">		<span class="keyword">return</span> res <span class="keyword">if</span> res != float(<span class="string">'inf'</span>) <span class="keyword">else</span> <span class="number">-1</span></div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">mincoins</span><span class="params">(self, amount, coins, dp)</span>:</span></div><div class="line">		<span class="keyword">if</span> amount == <span class="number">0</span>:</div><div class="line">			<span class="keyword">return</span> <span class="number">0</span></div><div class="line">		<span class="keyword">if</span> amount &lt; min(coins):</div><div class="line">			<span class="keyword">return</span> float(<span class="string">'inf'</span>)</div><div class="line"></div><div class="line">		<span class="keyword">if</span> dp[amount] != float(<span class="string">'inf'</span>):</div><div class="line">			<span class="keyword">return</span> dp[amount]</div><div class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> coins:</div><div class="line">			<span class="keyword">if</span> i &lt;= amount:</div><div class="line">				dp[amount] = min(dp[amount], self.mincoins(amount - i, coins, dp) + <span class="number">1</span>)</div><div class="line">		<span class="keyword">return</span> dp[amount]</div><div class="line"></div><div class="line">s = Solution()</div><div class="line"><span class="keyword">print</span> s.coinChange([<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>], <span class="number">8</span>)</div></pre></td></tr></table></figure>
+<h2 id="subsetsum问题"><a href="#subsetsum问题" class="headerlink" title="subsetsum问题"></a>subsetsum问题</h2><h3 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h3><p>给定数组a(都是正数),目标和S,给出和为S的a的子数组的最小长度，如果无法得到返回-1。</p>
+<h3 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
+<li>定义状态v(i,j)考虑第i个数，和为j,最少的数字数目。</li>
+<li>两种子状态：<ul>
+<li>用了第i个数 v(i-1,j-a[i])+1</li>
+<li>没用 v(i-1,j)</li>
+</ul>
+</li>
+<li>v(i,j)=min(两种子状态)</li>
+<li>终止条件：<ul>
+<li>首先考虑初始条件即i=0时刻（先考虑i的原因是不对 i&lt;0 做处理，而且更好理解），如果i==0时，a[i]=j,则return 1；否则return inf。可以这里理解，在只有一个数的时候，如果还不等于j，那之后没有可以继续递归的了，这就是终止条件。</li>
+<li>其他的都是中间的终止条件，如果j&lt;0,则返回inf，如果j=0，则返回0。试想，如果你再考虑第i个数要求和为0，则不管之前的结果，这一状态的值一定是0;j&lt;0同理，考虑第i个数要求j&lt;0,则无论如何不能实现。</li>
+<li>(<strong>不用考虑a[i]是不是小于j,因为我们是在考虑第i个数的时候，即便a[i]&gt;j，只是在求他的子状态时，没用这个数而已</strong>)</li>
+</ul>
+</li>
+</ol>
+<h3 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*-coding:utf8-*-</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(coins, W)</span>:</span></div><div class="line">	n = len(coins)</div><div class="line">	dp = []</div><div class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(n):</div><div class="line">		dp.append([float(<span class="string">'inf'</span>)] * (W + <span class="number">1</span>))</div><div class="line">	<span class="comment"># dp[idx][W] 存放的是考虑idx时,和为W最小硬币数目</span></div><div class="line"></div><div class="line">	res = minCount(n - <span class="number">1</span>, W, coins, dp)</div><div class="line">	<span class="keyword">if</span> res == float(<span class="string">'inf'</span>):</div><div class="line">		<span class="keyword">return</span> <span class="number">-1</span></div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">return</span> res</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">minCount</span><span class="params">(idx, W, coins, dp)</span>:</span></div><div class="line">	<span class="keyword">if</span> W == <span class="number">0</span>:</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span></div><div class="line">	<span class="keyword">if</span> W &lt; <span class="number">0</span>:</div><div class="line">		<span class="keyword">return</span> float(<span class="string">'inf'</span>)</div><div class="line">	<span class="keyword">if</span> idx &lt; <span class="number">0</span>:</div><div class="line">		<span class="keyword">return</span> float(<span class="string">'inf'</span>)</div><div class="line"></div><div class="line">	<span class="keyword">if</span> dp[idx][W] != float(<span class="string">'inf'</span>):</div><div class="line">		<span class="keyword">return</span> dp[idx][W]</div><div class="line"></div><div class="line">	a = minCount(idx - <span class="number">1</span>, W - coins[idx], coins, dp) + <span class="number">1</span></div><div class="line">	b = minCount(idx - <span class="number">1</span>, W, coins, dp)</div><div class="line">	dp[idx][W] = min(a, b)</div><div class="line">	<span class="keyword">return</span> dp[idx][W]</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">print</span> coinChange([<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">6</span>], <span class="number">16</span>)</div></pre></td></tr></table></figure>
+<h2 id="0-1背包问题"><a href="#0-1背包问题" class="headerlink" title="0-1背包问题"></a>0-1背包问题</h2><h3 id="题目-2"><a href="#题目-2" class="headerlink" title="题目"></a>题目</h3><p>有编号分别为a,b,c,d,e的五件物品，它们的重量分别是2,2,6,5,4，它们的价值分别是6,3,5,4,6，现在给你个承重为10的背包，如何让背包里装入的物品具有最大的价值总和？</p>
+<h3 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
+<li><strong>根据子问题得到状态</strong> 我们的问题是将5个物品，放进承重是10的背包的最大值，子问题是将四个物品，放进承重为x背包的价值最大值，所以我们的状态就是v(i,j)，将第i个物品，放进容量为j的背包的价值最大值。</li>
+<li>v(i,j)对于物品i来讲，有两种子状态<ul>
+<li>放进去 v(i-1,j-w[i])+v[i],</li>
+<li>不放进去 v(i-1,j)</li>
+</ul>
+</li>
+<li>v(i,j)=max(两种状态)</li>
+<li>考虑终止条件：<ul>
+<li>先考虑i=0时刻，这时如果w[i]&gt;j，return -inf（不写0的原因是因为避免0+v[i]，我们的目的是说明这种情况最终不会有价值），如果w[i]&lt;=j，返回v[i]</li>
+<li>中间的终止条件，如果j&lt;0,则返回-inf；如果j=0,则返回0</li>
+</ul>
+</li>
+</ol>
+<h3 id="代码-4"><a href="#代码-4" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*-coding:utf8-*-</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bag0_1</span><span class="params">(weights, values, W)</span>:</span></div><div class="line">	n = len(weights)</div><div class="line">	dp = []</div><div class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(n):</div><div class="line">		dp.append([-float(<span class="string">'inf'</span>)] * (W + <span class="number">1</span>))</div><div class="line">	<span class="comment"># dp[idx][W] 考虑idx时,</span></div><div class="line">	res = maxVal(n - <span class="number">1</span>, W, weights, values, dp)</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span> <span class="keyword">if</span> res == -float(<span class="string">'inf'</span>) <span class="keyword">else</span> res</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">maxVal</span><span class="params">(idx, W, weights, values, dp)</span>:</span></div><div class="line">	<span class="keyword">if</span> idx==<span class="number">0</span>:</div><div class="line">		<span class="keyword">if</span> weights[idx]&lt;=W:</div><div class="line">			<span class="keyword">return</span> values[idx]</div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			<span class="keyword">return</span> -float(<span class="string">'inf'</span>)</div><div class="line">	<span class="keyword">if</span> W == <span class="number">0</span>:</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span></div><div class="line">	<span class="keyword">if</span> W &lt; <span class="number">0</span>:</div><div class="line">		<span class="keyword">return</span> -float(<span class="string">'inf'</span>)</div><div class="line"></div><div class="line">	<span class="keyword">if</span> dp[idx][W] != -float(<span class="string">'inf'</span>):</div><div class="line">		<span class="keyword">return</span> dp[idx][W]</div><div class="line"></div><div class="line">	dp[idx][W] = max(maxVal(idx - <span class="number">1</span>, W - weights[idx], weights, values, dp) + values[idx],</div><div class="line">					 maxVal(idx - <span class="number">1</span>, W, weights, values, dp))</div><div class="line">	<span class="keyword">return</span> dp[idx][W]</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">print</span> bag0_1([<span class="number">2</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>], [<span class="number">6</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">6</span>], <span class="number">10</span>)</div></pre></td></tr></table></figure>
+<h2 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h2><p>C[i,j]表示X到i和Y到j长度的最长公共子序列<br>我们求C[i,j]<br>状态转移方程：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">C[i,j] = <span class="number">0</span>  <span class="keyword">if</span>  i=<span class="number">0</span> <span class="keyword">or</span> j=<span class="number">0</span></div><div class="line">         C[i<span class="number">-1</span>,j<span class="number">-1</span>] <span class="keyword">if</span> i&gt;<span class="number">0</span>,j&gt;<span class="number">0</span>,X[i]==Y[j]</div><div class="line">		 max(C[i,j<span class="number">-1</span>],C[i<span class="number">-1</span>,j]) <span class="keyword">if</span> i&gt;<span class="number">0</span>,j&gt;<span class="number">0</span> X[i]!=Y[j]</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
+          
+            <a href="/tags/Leetcode/" rel="tag">#Leetcode</a>
+          
+            <a href="/tags/DP/" rel="tag">#DP</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/10/深度优先搜索(DFS)学习笔记/" rel="prev" title="深度优先搜索(DFS)学习笔记">
+                深度优先搜索(DFS)学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/31/动态规划(DP)学习笔记/"
+           data-title="动态规划(DP)学习笔记" data-url="http://qutan.github.io/2016/10/31/动态规划(DP)学习笔记/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/theavatar.jpg"
+               alt="Qutan" />
+          <p class="site-author-name" itemprop="name">Qutan</p>
+          <p class="site-description motion-element" itemprop="description">越了解，越敬畏。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Qutan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/345930427" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/qutan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#四个步骤"><span class="nav-number">1.</span> <span class="nav-text">四个步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最长递增子序列"><span class="nav-number">2.</span> <span class="nav-text">最长递增子序列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.1.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#房屋抢劫"><span class="nav-number">3.</span> <span class="nav-text">房屋抢劫</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路-1"><span class="nav-number">3.1.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-1"><span class="nav-number">3.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#找零钱问题"><span class="nav-number">4.</span> <span class="nav-text">找零钱问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目"><span class="nav-number">4.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路-2"><span class="nav-number">4.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-2"><span class="nav-number">4.3.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#subsetsum问题"><span class="nav-number">5.</span> <span class="nav-text">subsetsum问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目-1"><span class="nav-number">5.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路-3"><span class="nav-number">5.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-3"><span class="nav-number">5.3.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-1背包问题"><span class="nav-number">6.</span> <span class="nav-text">0-1背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目-2"><span class="nav-number">6.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路-4"><span class="nav-number">6.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-4"><span class="nav-number">6.3.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最长公共子序列"><span class="nav-number">7.</span> <span class="nav-text">最长公共子序列</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qutan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"chnqutan"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
